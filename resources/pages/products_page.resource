@@ -13,19 +13,20 @@ ${FIRST_PRODUCT_PRICE}       css=.inventory_item:first-child .inventory_item_pri
 ${BACKPACK_ADD_BUTTON}       css=[data-test="add-to-cart-sauce-labs-backpack"]
 ${BACKPACK_REMOVE_BUTTON}    css=[data-test="remove-sauce-labs-backpack"]
 
+${CART_LINK}                 css=[data-test="shopping-cart-link"]
 ${CART_BADGE}                css=.shopping_cart_badge
 
 
 *** Keywords ***
 Verify Products Page Contains Expected Inventory
-    [Documentation]    Verifies the Products page and expected number of inventory items.
+    [Documentation]    Verifies the Products page and expected inventory count.
 
     Get Text    ${PRODUCTS_PAGE_TITLE}    ==    Products
     Get Element Count    ${INVENTORY_ITEMS}    ==    6
 
 
 Sort Products By
-    [Documentation]    Changes the product sorting using the supplied SauceDemo sort value.
+    [Documentation]    Changes product sorting using the supplied SauceDemo sort value.
     [Arguments]    ${sort_value}
 
     Select Options By    ${SORT_DROPDOWN}    value    ${sort_value}
@@ -39,7 +40,7 @@ Verify First Product Name
 
 
 Verify First Product Price
-    [Documentation]    Verifies the price of the first displayed product.
+    [Documentation]    Verifies the first displayed product price.
     [Arguments]    ${expected_price}
 
     Get Text    ${FIRST_PRODUCT_PRICE}    ==    ${expected_price}
@@ -52,9 +53,15 @@ Add Backpack To Cart
 
 
 Remove Backpack From Cart
-    [Documentation]    Removes Sauce Labs Backpack from the shopping cart.
+    [Documentation]    Removes Sauce Labs Backpack from the Products page.
 
     Click    ${BACKPACK_REMOVE_BUTTON}
+
+
+Open Shopping Cart
+    [Documentation]    Opens the shopping cart.
+
+    Click    ${CART_LINK}
 
 
 Verify Cart Badge Count
@@ -65,6 +72,6 @@ Verify Cart Badge Count
 
 
 Verify Cart Badge Is Not Displayed
-    [Documentation]    Verifies the cart badge disappears when the cart becomes empty.
+    [Documentation]    Verifies the cart badge is absent when the cart is empty.
 
     Get Element Count    ${CART_BADGE}    ==    0
