@@ -1,4 +1,5 @@
 *** Settings ***
+Resource    ../../../resources/common/config.resource
 Resource    ../../../resources/pages/login_page.resource
 Resource    ../../../resources/variables/users.resource
 
