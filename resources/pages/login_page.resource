@@ -1,10 +1,9 @@
 *** Settings ***
-Library    Browser
+Library     Browser
+Resource    ../common/config.resource
 
 
 *** Variables ***
-${BASE_URL}                 https://www.saucedemo.com/
-
 ${USERNAME_INPUT}           css=[data-test="username"]
 ${PASSWORD_INPUT}           css=[data-test="password"]
 ${LOGIN_BUTTON}             css=[data-test="login-button"]
@@ -14,8 +13,8 @@ ${PRODUCTS_PAGE_TITLE}      css=.title
 
 *** Keywords ***
 Open Login Page
-    [Documentation]    Opens SauceDemo login page in Chromium.
-    New Browser    chromium    headless=False
+    [Documentation]    Opens the configured SauceDemo environment.
+    New Browser    ${BROWSER}    headless=${HEADLESS}
     New Page    ${BASE_URL}
 
 
@@ -29,14 +28,14 @@ Login With Credentials
 
 
 Verify Successful Login
-    [Documentation]    Verifies that login successfully navigated to the products page.
+    [Documentation]    Verifies that login successfully navigated to the Products page.
 
     Get Url    *=    inventory.html
     Get Text    ${PRODUCTS_PAGE_TITLE}    ==    Products
 
 
 Verify Login Error
-    [Documentation]    Verifies the login error displayed to the user.
+    [Documentation]    Verifies the expected login error.
     [Arguments]    ${expected_error}
 
     Get Text    ${LOGIN_ERROR}    ==    ${expected_error}

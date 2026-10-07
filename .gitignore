@@ -10,6 +10,10 @@ log.html
 report.html
 playwright-log.txt
 
+# Pabot
+.pabotsuitenames
+pabot_results/
+
 # Environment variables
 .env
 .env.*
@@ -25,3 +29,4 @@ playwright-log.txt
 .ruff_cache/
 .pytest_cache/
 .mypy_cache/
+.coverage

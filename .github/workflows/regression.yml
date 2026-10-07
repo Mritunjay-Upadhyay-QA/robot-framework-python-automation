@@ -1,0 +1,43 @@
+name: Regression
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1-5"
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    name: Parallel Regression
+    runs-on: ubuntu-latest
+
+    container:
+      image: marketsquare/robotframework-browser:20.6.0
+      options: --ipc=host --user pwuser
+
+    env:
+      ENV: qa
+      HEADLESS: "true"
+      PROCESSES: "4"
+      API_USERNAME: ${{ secrets.BOOKER_USERNAME || 'admin' }}
+      API_PASSWORD: ${{ secrets.BOOKER_PASSWORD || 'password123' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install project dependencies
+        run: pip install --no-cache-dir -r requirements.txt
+
+      - name: Run regression in parallel
+        run: bash scripts/run_tests.sh parallel qa
+
+      - name: Upload Robot Framework results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: robot-regression-results
+          path: results/
+          retention-days: 14
