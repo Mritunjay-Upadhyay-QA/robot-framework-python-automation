@@ -27,7 +27,6 @@ class TestDataLibrary:
     def generate_unique_email(self, prefix: str = "robot") -> str:
         """Generate a unique email address for test automation."""
         unique_suffix = uuid4().hex[:8]
-
         return f"{prefix}.{unique_suffix}@example.com"
 
     @keyword("Get Future Date")
@@ -38,5 +37,42 @@ class TestDataLibrary:
     ) -> str:
         """Return a future date using the requested output format."""
         future_date = date.today() + timedelta(days=days)
-
         return future_date.strftime(date_format)
+
+    @keyword("Generate Booking Payload")
+    def generate_booking_payload(self) -> dict[str, object]:
+        """Generate a valid Restful Booker booking request."""
+        unique_suffix = uuid4().hex[:6]
+        checkin = date.today() + timedelta(days=7)
+        checkout = checkin + timedelta(days=3)
+
+        return {
+            "firstname": f"Robot{unique_suffix}",
+            "lastname": "Automation",
+            "totalprice": 250,
+            "depositpaid": True,
+            "bookingdates": {
+                "checkin": checkin.isoformat(),
+                "checkout": checkout.isoformat(),
+            },
+            "additionalneeds": "Breakfast",
+        }
+
+    @keyword("Generate Updated Booking Payload")
+    def generate_updated_booking_payload(self) -> dict[str, object]:
+        """Generate a full replacement payload for a booking."""
+        payload = self.generate_booking_payload()
+        payload["lastname"] = "UpdatedAutomation"
+        payload["totalprice"] = 325
+        payload["depositpaid"] = False
+        payload["additionalneeds"] = "Lunch"
+        return payload
+
+    @keyword("Generate Booking Patch")
+    def generate_booking_patch(self) -> dict[str, str]:
+        """Generate data for a partial booking update."""
+        unique_suffix = uuid4().hex[:6]
+        return {
+            "firstname": f"Patched{unique_suffix}",
+            "additionalneeds": "Dinner",
+        }
