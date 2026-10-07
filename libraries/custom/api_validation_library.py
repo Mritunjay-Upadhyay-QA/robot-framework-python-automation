@@ -7,7 +7,6 @@ from typing import Any
 from jsonschema import validate
 from robot.api.deco import keyword, library
 
-
 BOOKING_SCHEMA = {
     "type": "object",
     "required": [
